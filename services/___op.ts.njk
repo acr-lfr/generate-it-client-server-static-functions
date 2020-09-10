@@ -1,0 +1,34 @@
+import HttpService from '{{ httpServiceImport if httpServiceImport else "../lib/HttpService" }}';
+{% set interfaces = importInterfaces(operations) %}
+{% for interface in interfaces -%}
+import { {{ interface }} } from './interfaces/{{ interface }}';
+{%- endfor %}
+
+export const basePath = '{{ basePath if basePath else "/" }}';
+
+{% for op in operations -%}
+{% for method, path in op.path -%}
+{% if isValidMethod(method)%}
+/**
+ *  Operation ID: {{ path.operationId }}
+ *  Summary: {{ path.summary }}
+ *  Description: {{ path.description }}
+ */
+export const {{ path.operationId }} = ({{ pathParamsToDomainParams(method, path, true) }}): Promise<{{ path['x-response-definitions']['200'] if path['x-response-definitions']['200'] else 'void' }}> => {
+  return HttpService.sendRequest({
+    method: '{{ method | upper}}',
+    path: {{ucFirst(operation_name)}}basePath + '{{ urlPathJoin(op.path_name)}}',
+    {% for requestType, value in path['x-request-definitions'] -%}
+      {% if requestType === 'path' %}params: pathParams,
+      {% elif requestType === 'query' %}qs: {{ requestType }},
+      {% elif requestType === 'formData' %}formData: files,
+      {% elif requestType === 'headers' %}headers: Object.assign(headers, additionalHeaders || {}),
+      {% else %}{{ requestType }},
+      {% endif %}
+    {%- endfor %}
+    {% if baseUrl %}baseUrl: '{{ baseUrl }}',{% endif %}
+  })
+}
+{% endif %}
+{%- endfor %}
+{%- endfor %}
