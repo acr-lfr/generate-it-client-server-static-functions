@@ -1,4 +1,4 @@
-# generate-it-typescript-client-to-server
+# generate-it-client-server-static-functions
 
 Generate-it typescript set of tpls for browser to client api client.
 
@@ -7,14 +7,14 @@ Uses Axios by default but you can drop in another http service file to replace a
 ## Default lib:
 ```
   "scripts": {
-    "generate:client": "generate-it ../ms_item_d/build/ms-item-d_1.0.0.yml -t https://github.com/acrontum/generate-it-typescript-client-to-server.git"
+    "generate:client": "generate-it ../ms_item_d/build/ms-item-d_1.0.0.yml -t https://github.com/acrontum/generate-it-client-server-static-functions.git"
 ```
-The [default http lib](https://github.com/acrontum/generate-it-typescript-client-to-server/blob/master/lib/HttpService.ts.njk) uses axios and simply calls the API and returns the promise. This default http class will not get overwritten so making changes to this file is safe. If your app consumes many apis then you will likely want to use a shared lib opposed to repeating this one each time... see below.
+The [default http lib](https://github.com/acrontum/generate-it-client-server-static-functions/blob/master/lib/HttpService.ts.njk) uses axios and simply calls the API and returns the promise. This default http class will not get overwritten so making changes to this file is safe. If your app consumes many apis then you will likely want to use a shared lib opposed to repeating this one each time... see below.
 
 ## Overriding the default http lib:
 ```
   "scripts": {
-    "generate:client": "generate-it ../ms_item_d/build/ms-item-d_1.0.0.yml -t https://github.com/acrontum/generate-it-typescript-client-to-server.git -$ httpServiceImport=@/services/HttpService"
+    "generate:client": "generate-it ../ms_item_d/build/ms-item-d_1.0.0.yml -t https://github.com/acrontum/generate-it-client-server-static-functions.git -$ httpServiceImport=@/services/HttpService"
 ```
 The default lib could very likely be too simple for your application, or you maybe you don't want to use axios. Or, which is often the case, your frontend talks to many APIs so managing the http lib from a single files is much more convenient and reduces bloat.
 
@@ -25,7 +25,7 @@ By default the base path is '/'. This will likely be something else if you are u
 
 Override the base path example to the name of the microservice:
 ```
-generate-it ../ms_item_d/build/ms-item-d_1.0.0.yml -t https://github.com/acrontum/generate-it-typescript-client-to-server.git -$ httpServiceImport=@/services/HttpService  -$ basePath=/ms-authentication/
+generate-it ../ms_item_d/build/ms-item-d_1.0.0.yml -t https://github.com/acrontum/generate-it-client-server-static-functions.git -$ httpServiceImport=@/services/HttpService  -$ basePath=/ms-authentication/
 ```
 
 ## Example multiclient generation script
@@ -95,7 +95,7 @@ const generate = (configArray) => {
       segmentsCount: 1,
       swaggerFilePath: item.from,
       targetDir: item.to,
-      template: 'https://github.com/acrontum/generate-it-typescript-client-to-server.git',
+      template: 'https://github.com/acrontum/generate-it-client-server-static-functions.git',
       variables: Object.assign({
         httpServiceImport: '@/services/HttpService',
         basePath: '/' + item.to.split('/').pop() + '/'
