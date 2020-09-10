@@ -17,7 +17,7 @@ export const basePath = '{{ basePath if basePath else "/" }}';
 export const {{ path.operationId }} = ({{ pathParamsToDomainParams(method, path, true) }}): Promise<{{ path['x-response-definitions']['200'] if path['x-response-definitions']['200'] else 'void' }}> => {
   return HttpService.sendRequest({
     method: '{{ method | upper}}',
-    path: {{ucFirst(operation_name)}}basePath + '{{ urlPathJoin(op.path_name)}}',
+    path: basePath + '{{ urlPathJoin(op.path_name)}}',
     {% for requestType, value in path['x-request-definitions'] -%}
       {% if requestType === 'path' %}params: pathParams,
       {% elif requestType === 'query' %}qs: {{ requestType }},
