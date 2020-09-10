@@ -33,37 +33,30 @@ The script will build a series of API clients using these templates (defaulting 
 
 The script will also depend on an npm package `command-line-args` to parse the cli arguments allowing to control which clients point to a specific URL and which default to the base url in the http service.
 
-For example:
+#### For example:
 Prod build
 ```
-node buildApi.js
+node generate-apis.js
 ```
 Override the channel api url:
 ```
-node buildApi.js --local ms-channel
+node generate-apis.js --local ms-channel
 ```
 
-the script:
+#### The script:
 ```javascript
 const config = [
   {
-    from: '../../backend/ms_authentication_d/build/ms-authentication-d_1.0.1.yml',
+    from: '../../backend/ms_authentication_d/build/ms-authentication_1.0.1.yml',
     to: 'src/api/ms-authentication'
   },
   {
-    from: '../../backend/ms_image_server_cache_d/build/ms_image_server_cache_d_1.0.0.yml',
-    to: 'src/api/ms-image-server-cache'
-  },
-  {
-    from: '../../backend/ms_item_d/build/ms-item-d_1.0.0.yml',
-    to: 'src/api/ms-item'
-  },
-  {
-    from: '../../backend/ms_channel_d/build/ms-channel-d_1.0.0.yml',
-    to: 'src/api/ms-channel',
+    from: '../../backend/ms_notification_d/build/ms_notification_d_1.0.0.yml',
+    to: 'src/api/ms-notification',
   },
 ]
 
+// eslint-disable-next-line no-undef
 const commandLineArgs = require('command-line-args')
 const options = commandLineArgs([{ name: 'local', type: String }])
 if (options.local) {
