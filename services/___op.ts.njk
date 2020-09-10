@@ -1,8 +1,11 @@
 import HttpService from '{{ httpServiceImport if httpServiceImport else "../lib/HttpService" }}';
 {% set interfaces = importInterfaces(operations) %}
+
+import type {
 {% for interface in interfaces -%}
-import type { {{ interface }} } from './interfaces/{{ interface }}';
+  {{ interface }},
 {%- endfor %}
+} from './interfaces/{{ interface }}';
 
 export const basePath = '{{ basePath if basePath else "/" }}';
 
